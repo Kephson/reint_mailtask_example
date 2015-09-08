@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2015-09-08T10:37:48Z" product-name="reint_mailtask_example">
+		<header/>
+		<body>
+			<trans-unit id="mail_sendout_task_h" approved="yes">
+				<source>Mail sendout task</source> 
+				<target state="translated">E-Mail Versand Test Task</target>
+			</trans-unit>
+			<trans-unit id="mail_sendout_task_t" approved="yes">
+				<source>This is an example mail sendout task with FLUID templates and translation.</source> 
+				<target state="translated">Ein Beispiel für einen Scheduler-Task mit FLUID Templates und Übersetzung.</target>
+			</trans-unit>
+			<trans-unit id="task_f_0" approved="yes">
+				<source>http-link or page id</source> 
+				<target state="translated">http-Link oder Seiten-ID</target>
+			</trans-unit>
+			<trans-unit id="task_f_1" approved="yes">
+				<source>Language of mail sendout</source> 
+				<target state="translated">Sprache</target>
+			</trans-unit>
+			<trans-unit id="task_f_2" approved="yes">
+				<source>Email address of receiver</source> 
+				<target state="translated">E-Mail Adresse des Empfängers</target>
+			</trans-unit>
+			<trans-unit id="task_f_3" approved="yes">
+				<source>Name of receiver</source> 
+				<target state="translated">Name des Empfängers</target>
+			</trans-unit>
+			<trans-unit id="task_f_4" approved="yes">
+				<source>Email address of sender</source> 
+				<target state="translated">E-Mail Adresse des Senders</target>
+			</trans-unit>
+			<trans-unit id="task_f_5" approved="yes">
+				<source>Name of sender</source> 
+				<target state="translated">Name des Senders</target>
+			</trans-unit>
+			<trans-unit id="task_en" approved="yes">
+				<source>English</source> 
+				<target state="translated">Englisch</target>
+			</trans-unit>
+			<trans-unit id="task_de" approved="yes">
+				<source>German</source> 
+				<target state="translated">Deutsch</target>
+			</trans-unit>
+			<trans-unit id="task_f_0_message_error_head" approved="yes">
+				<source>No link found</source> 
+				<target state="translated">Kein Link gefunden</target>
+			</trans-unit>
+			<trans-unit id="task_f_0_message_error_body" approved="yes">
+				<source>Please enter a page id or a http-link to the link field.</source> 
+				<target state="translated">Bitte geben Sie eine Seiten-ID oder einen http-Link in das vorgesehene Feld ein.</target>
+			</trans-unit>
+			<trans-unit id="task_f_2_message_error_head" approved="yes">
+				<source>No receiver email address found</source> 
+				<target state="translated">Keine Empfänger Adresse gefunden</target>
+			</trans-unit>
+			<trans-unit id="task_f_2_message_error_body" approved="yes">
+				<source>Please enter an receiver email address in the receiver email field.</source> 
+				<target state="translated">Bitte geben Sie eine E-Mail Adresse für den Empfänger an.</target>
+			</trans-unit>
+			<trans-unit id="task_f_3_message_error_head" approved="yes">
+				<source>No receiver name found</source> 
+				<target state="translated">Kein Empfänger-Name gefunden</target>
+			</trans-unit>
+			<trans-unit id="task_f_3_message_error_body" approved="yes">
+				<source>Please enter a name for the receiver in the receiver name field.</source> 
+				<target state="translated">Bitte geben Sie einen Namen für den Empfänger an.</target>
+			</trans-unit>
+			<trans-unit id="task_f_4_message_error_head" approved="yes">
+				<source>No sender email address found</source> 
+				<target state="translated">Keine Sender E-Mail Adresse gefunden</target>
+			</trans-unit>
+			<trans-unit id="task_f_4_message_error_body" approved="yes">
+				<source>Please enter an receiver sender address in the sender email field.</source> 
+				<target state="translated">Bitte geben Sie eine E-Mail Adresse für den Sender an.</target>
+			</trans-unit>
+			<trans-unit id="task_f_5_message_error_head" approved="yes">
+				<source>No sender name found</source> 
+				<target state="translated">Kein Sender Name gefunden</target>
+			</trans-unit>
+			<trans-unit id="task_f_5_message_error_body" approved="yes">
+				<source>Please enter a name for the sender in the sender name field.</source> 
+				<target state="translated">Bitte geben Sie einen Namen für den Sender an.</target>
+			</trans-unit>
+
+			<trans-unit id="subject" approved="yes">
+				<source>Testmail from TYPO3 scheduler</source> 
+				<target state="translated">Test E-Mail vom TYPO3 Scheduler</target>
+			</trans-unit>
+
+			<trans-unit id="example_mail_title" approved="yes">
+				<source>Test mail</source> 
+				<target state="translated">Test E-Mail</target>
+			</trans-unit>
+			<trans-unit id="example_mail_headline" approved="yes">
+				<source>This is a test mail</source> 
+				<target state="translated">Dies ist eine Test E-Mail</target>
+			</trans-unit>
+			<trans-unit id="example_mail_text" approved="yes">
+				<source>This is a text as example and could be translated.</source> 
+				<target state="translated">Dies ist ein Text als Beispiel und kann übersetzt werden.</target>
+			</trans-unit>
+			<trans-unit id="example_mail_footer" approved="yes">
+				<source>This is a text in footer.</source> 
+				<target state="translated">Dies ist ein Text im Fußbereich.</target>
+			</trans-unit>
+			<trans-unit id="example_mail_link_page" approved="yes">
+				<source>This is an example frontend link to an internal page id.</source>
+				<target state="translated">Dies ist ein Frontend-Link zu einer internen Seite.</target>
+			</trans-unit>
+			<trans-unit id="example_mail_link_external" approved="yes">
+				<source>This is an example link to an external uri.</source>
+				<target state="translated">Dies ist ein Beispiel zu einer externen URI.</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

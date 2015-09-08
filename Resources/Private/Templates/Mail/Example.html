@@ -1,0 +1,27 @@
+{namespace r=RENOLIT\ReintMailtaskExample\ViewHelpers}
+<f:layout name="Mail" />
+<f:section name="main">
+<table border="0" cellpadding="0" cellspacing="0" id="templateContainer">
+	<tr>
+		<td align="center" valign="top" class="bodyContainer">
+			<!-- BEGIN BODY // -->
+			<table border="0" cellpadding="0" cellspacing="0" width="94%" class="paddingContent">
+				<tr>
+					<td colspan="2" width="100%">
+						<h1><f:translate key="{config.lFilePath}example_mail_headline" /></h1>
+						<p><f:translate key="{config.lFilePath}example_mail_text" /></p>
+						<p><f:if condition="{r:check.isInteger(variable:'{config.link}')}">
+							<f:then><r:link.page pageUid="{config.link}" absolute="1" forceFrontendLink="{config.forceFrontendLink}"><f:translate key="{config.lFilePath}example_mail_link_page" /> (<r:uri.page pageUid="{config.link}" absolute="1" forceFrontendLink="{config.forceFrontendLink}" />)</r:link.page></f:then>
+							<f:else><f:link.external uri="{config.link}" target="_blank"><f:translate key="{config.lFilePath}example_mail_link_external" /> (<f:uri.external uri="{config.link}" />)</f:link.external></f:else>
+						</f:if></p>
+					</td>
+				</tr>
+				
+			</table>
+			<!-- // END BODY -->
+		</td>
+	</tr>
+	<!-- Footer Zeile -->
+	<f:render partial="Mail/Footer" arguments="{_all}" />
+</table>
+</f:section>

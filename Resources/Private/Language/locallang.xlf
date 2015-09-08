@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-09-08T10:37:48Z" product-name="reint_mailtask_example">
+		<header/>
+		<body>
+			<trans-unit id="mail_sendout_task_h">
+				<source>Mail sendout task</source>
+			</trans-unit>
+			<trans-unit id="mail_sendout_task_t">
+				<source>This is an example mail sendout task with FLUID templates and translation.</source>
+			</trans-unit>
+			<trans-unit id="task_f_0">
+				<source>http-link or page id</source>
+			</trans-unit>
+			<trans-unit id="task_f_1">
+				<source>Language of mail sendout</source>
+			</trans-unit>
+			<trans-unit id="task_f_2">
+				<source>Email address of receiver</source>
+			</trans-unit>
+			<trans-unit id="task_f_3">
+				<source>Name of receiver</source>
+			</trans-unit>
+			<trans-unit id="task_f_4">
+				<source>Email address of sender</source>
+			</trans-unit>
+			<trans-unit id="task_f_5">
+				<source>Name of sender</source>
+			</trans-unit>
+			<trans-unit id="task_en">
+				<source>English</source>
+			</trans-unit>
+			<trans-unit id="task_de">
+				<source>German</source>
+			</trans-unit>
+			<trans-unit id="task_f_0_message_error_head">
+				<source>No link found</source>
+			</trans-unit>
+			<trans-unit id="task_f_0_message_error_body">
+				<source>Please enter a page id or a http-link to the link field.</source>
+			</trans-unit>
+			<trans-unit id="task_f_2_message_error_head">
+				<source>No receiver email address found</source>
+			</trans-unit>
+			<trans-unit id="task_f_2_message_error_body">
+				<source>Please enter an receiver email address in the receiver email field.</source>
+			</trans-unit>
+			<trans-unit id="task_f_3_message_error_head">
+				<source>No receiver name found</source>
+			</trans-unit>
+			<trans-unit id="task_f_3_message_error_body">
+				<source>Please enter a name for the receiver in the receiver name field.</source>
+			</trans-unit>
+			<trans-unit id="task_f_4_message_error_head">
+				<source>No sender email address found</source>
+			</trans-unit>
+			<trans-unit id="task_f_4_message_error_body">
+				<source>Please enter an receiver sender address in the sender email field.</source>
+			</trans-unit>
+			<trans-unit id="task_f_5_message_error_head">
+				<source>No sender name found</source>
+			</trans-unit>
+			<trans-unit id="task_f_5_message_error_body">
+				<source>Please enter a name for the sender in the sender name field.</source>
+			</trans-unit>
+
+			<trans-unit id="subject">
+				<source>Testmail from TYPO3 scheduler</source>
+			</trans-unit>
+
+			<trans-unit id="example_mail_title">
+				<source>Test mail</source>
+			</trans-unit>
+			<trans-unit id="example_mail_headline">
+				<source>This is a test mail</source>
+			</trans-unit>
+			<trans-unit id="example_mail_text">
+				<source>This is a text as example and could be translated.</source>
+			</trans-unit>
+			<trans-unit id="example_mail_footer">
+				<source>This is a text in footer.</source>
+			</trans-unit>
+			<trans-unit id="example_mail_link_page">
+				<source>This is an example frontend link to an internal page id.</source>
+			</trans-unit>
+			<trans-unit id="example_mail_link_external">
+				<source>This is an example link to an external uri.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

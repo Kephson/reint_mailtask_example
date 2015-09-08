@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+        <title><f:translate key="{config.lFilePath}example_mail_title" /></title>
+		
+        <style type="text/css">
+			#outlook a { padding: 0; }
+			.ReadMsgBody{ width: 100%; }
+			.ExternalClass{ width: 100%; }
+			.ExternalClass,
+			.ExternalClass p,
+			.ExternalClass span,
+			.ExternalClass font,
+			.ExternalClass td,
+			.ExternalClass div { line-height: 100%; }
+			body, table, td, p, a, li, blockquote { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+			table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+			img { -ms-interpolation-mode: bicubic; }
+
+			body { margin: 0; padding: 0; }
+			img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+			table { border-collapse: collapse !important; }
+			body, #bodyTable, #bodyCell{
+				height: 100% !important;
+				margin: 0;
+				padding: 0;
+				width: 100% !important;
+			}
+
+			#bodyCell {
+				padding: 20px;
+			}
+			#templateContainer {
+				width: 100%;
+			}
+			body,
+			#bodyTable {
+				color: #505050;
+				font-family: Helvetica;
+				font-size: 14px;
+				line-height: 150%;
+				background-color: #DEE0E2;
+			}
+			#bodyCell {
+				border-top: 4px solid #BBBBBB;
+			}
+			#templateContainer {
+				border: 1px solid #BBBBBB;
+			}
+			.emailButton {
+				border-collapse: separate;
+				border-radius: 4px;
+			}
+			.link {
+				display: block !important;
+				text-decoration: none;
+				height: 40px !important;
+				line-height: 40px !important;
+				padding: 3px 100px;
+			}
+			.buttonMore {
+				background-color: #fed102;
+			}
+			.buttonMore a {
+				color: #000;
+			}
+			.buttonConfirm {
+				background-color: #8dbb37;
+			}
+			.buttonConfirm a {
+				color: #fff;
+			}
+			.buttonDecline {
+				background-color: #a13123;
+			}
+			.buttonDecline a {
+				color: #fff;
+			}
+			h1 {
+				display: block;
+				font-family: Helvetica;
+				font-size: 26px;
+				font-style: normal;
+				font-weight: bold;
+				line-height: 100%;
+				letter-spacing: normal;
+				margin-top: 0;
+				margin-right: 0;
+				margin-bottom: 10px;
+				margin-left: 0;
+				text-align: left;
+			}
+			h2 {
+				color: #606060 !important;
+				display: block;
+				font-family: Helvetica;
+				font-size: 16px;
+				font-style: italic;
+				font-weight: normal;
+				line-height: 100%;
+				letter-spacing: normal;
+				margin-top: 0;
+				margin-right: 0;
+				margin-bottom: 10px;
+				margin-left: 0;
+				text-align: left;
+			}
+			.bodyContent {
+				font-size: 14px;
+				line-height: 150%;
+				text-align: left;
+			}
+			.setFont,
+			.setFont td {
+			}
+			.bodyContent a:link,
+			.bodyContent a:visited {
+				color: #606060;
+				font-weight: normal;
+				text-decoration: none;
+			}
+			.bodyContainer {
+				background-color: #F4F4F4;
+				border-top: 1px solid #FFFFFF;
+				border-bottom: 1px solid #CCCCCC;
+			}
+			.footerContainer {
+				background-color: #F4F4F4;
+				border-top: 1px solid #FFFFFF;
+			}
+
+			.bodyContainer,
+			.footerContainer {
+				padding: 2%;
+			}
+			.footerContent {
+				color: #808080;
+				font-family: Helvetica;
+				font-size: 10px;
+				line-height: 150%;
+				text-align: left;
+			}
+		</style>
+    </head>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+
+	<center>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+	<tr>
+		<td align="center" valign="top" id="bodyCell">
+			<!-- BEGIN TEMPLATE // -->
+			<f:render section="main" />
+			<!-- // END TEMPLATE -->
+		</td>
+	</tr>
+</table>
+	</center>
+</body>
+</html>
