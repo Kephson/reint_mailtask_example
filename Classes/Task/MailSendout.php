@@ -65,14 +65,13 @@ class MailSendout {
 		$sender = array($sender_email => $sender_name);
 
 		// change language if other language is set in scheduler task
-		$GLOBALS['LANG'] = GeneralUtility::makeInstance('\\TYPO3\\CMS\\Lang\\LanguageService');
+		$GLOBALS['LANG'] = GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
 		$GLOBALS['LANG']->init($transLang);
 
 		$subject = LocalizationUtility::translate($this->defaultConfig['lFilePath'] . 'subject', $this->defaultConfig['extKey']);
 		$body = $this->renderMailContent();
-		$mailSent = $this->sendMail($receiver, $sender, $subject, $body);
-
-		return $mailSent;
+		
+		return $this->sendMail($receiver, $sender, $subject, $body);
 	}
 
 	/**
@@ -83,7 +82,7 @@ class MailSendout {
 	 * @return string
 	 */
 	protected function renderMailContent($templateName = 'Example') {
-		$view = GeneralUtility::makeInstance('\\TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$view->getRequest()->setControllerExtensionName($this->defaultConfig['extKey']); // path the extension name to get translation work
 		$view->setPartialRootPath(ExtensionManagementUtility::extPath($this->defaultConfig['extKey']) . 'Resources/Private/Partials/');
 		$view->setLayoutRootPath(ExtensionManagementUtility::extPath($this->defaultConfig['extKey']) . 'Resources/Private/Layouts/');
@@ -106,7 +105,7 @@ class MailSendout {
 	 */
 	protected function sendMail($receiver = array(), $sender = array(), $subject = '', $body = '', $attachment = '', $bodyType = 'text/html') {
 
-		$mail = GeneralUtility::makeInstance('\\TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 
 		// add attachment
 		if ($attachment !== '') {

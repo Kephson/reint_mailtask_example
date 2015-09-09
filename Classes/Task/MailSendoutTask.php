@@ -41,9 +41,8 @@ class MailSendoutTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	public function execute() {
 
 		// initialize task class
-		$mailSendout = GeneralUtility::makeInstance('\\RENOLIT\\ReintMailtaskExample\\Task\\MailSendout');
-		$mailSent = $mailSendout->run($this->link, $this->translang, $this->receiver_email, $this->receiver_name, $this->sender_email, $this->sender_name);
-		return $mailSent;
+		$mailSendout = GeneralUtility::makeInstance('RENOLIT\\ReintMailtaskExample\\Task\\MailSendout');
+		return $mailSendout->run($this->link, $this->translang, $this->receiver_email, $this->receiver_name, $this->sender_email, $this->sender_name);
 	}
 
 }

@@ -97,8 +97,8 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * @return array
 	 */
 	private function uriFor($targetPageUid = NULL, $actionName = NULL, $controllerArguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL, $format = '', array $additionalParams = array(), $argumentPrefix = NULL) {
-		$environmentService = GeneralUtility::makeInstance('\\TYPO3\\CMS\\Extbase\\Service\\EnvironmentService');
-		$extensionService = GeneralUtility::makeInstance('\\TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
+		$environmentService = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Service\\EnvironmentService');
+		$extensionService = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
 
 		if ($actionName !== NULL) {
 			$controllerArguments['action'] = $actionName;

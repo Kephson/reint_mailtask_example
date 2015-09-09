@@ -17,7 +17,7 @@ Scheduler mail task example
 		reint_mailtask_example
 
 	:Version:
-		0.5.0
+		0.5.1
 
 	:Language:
 		en / de
