@@ -254,7 +254,7 @@ class MailSendoutFields implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderI
 	 */
 	protected function getTextField($fieldID, $fieldKey, $value) {
 
-		return '<input type="text" name="' . $this->fieldNamePrefix . '[' . $fieldKey . ']" id="' . $fieldID . '" value="' . $value . '" size="30" />';
+		return '<input class="form-control" type="text" name="' . $this->fieldNamePrefix . '[' . $fieldKey . ']" id="' . $fieldID . '" value="' . $value . '" size="30" />';
 	}
 
 	/**
@@ -267,7 +267,7 @@ class MailSendoutFields implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderI
 	 */
 	protected function getTranslationField($fieldID, $value = 'en') {
 
-		$field = '<select name="' . $this->fieldNamePrefix . '[transLanguage]" id="' . $fieldID . '">';
+		$field = '<select name="' . $this->fieldNamePrefix . '[transLanguage]" id="' . $fieldID . '" class="form-control">';
 		$values = array(
 			'en' => 'task_en',
 			'de' => 'task_de',

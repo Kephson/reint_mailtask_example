@@ -15,9 +15,22 @@ Read changelog here.
 
 -----------------------
 
+- **15.09.2015** -> 0.5.3
+
+  - small documentation update
+
+
+-----------------------
+
+- **09.09.2015** -> 0.5.2
+
+  - added field classes for scheduler task in 7.4
+
+
+-----------------------
+
 - **09.09.2015** -> 0.5.1
 
-  - release of version 0.5.1
   - added compatibility for TYPO3 7.4
   - updated documentation
 
