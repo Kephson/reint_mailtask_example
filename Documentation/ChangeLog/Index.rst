@@ -15,6 +15,13 @@ Read changelog here.
 
 -----------------------
 
+- **19.11.2015** -> 1.0.0
+
+  - added compatibility for 7 LTS
+
+
+-----------------------
+
 - **15.09.2015** -> 0.5.3
 
   - small documentation update
