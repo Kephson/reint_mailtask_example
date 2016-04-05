@@ -65,13 +65,14 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = TRUE
 	 * @param string $addQueryStringMethod Set which parameters will be kept. Only active if $addQueryString = TRUE
 	 * @param boolean $forceFrontendLink Force to generate a frontend link, e.g. in backend
+	 * @param integer $rootpageId Rootpage ID of page tree
 	 * @return string Rendered page URI
 	 */
-	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(), $addQueryStringMethod = NULL, $forceFrontendLink = FALSE) {
+	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(), $addQueryStringMethod = NULL, $forceFrontendLink = FALSE, $rootpageId = 1) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 
 		if ($forceFrontendLink) {
-			$this->initTSFE();
+			$this->initTSFE($rootpageId);
 			$uri = $uriBuilder->reset()
 					->setTargetPageUid($pageUid)
 					->setTargetPageType($pageType)

@@ -11,7 +11,7 @@
 						<h1><f:translate key="{config.lFilePath}example_mail_headline" /></h1>
 						<p><f:translate key="{config.lFilePath}example_mail_text" /></p>
 						<p><f:if condition="{r:check.isInteger(variable:'{config.link}')}">
-							<f:then><r:link.page pageUid="{config.link}" absolute="1" forceFrontendLink="{config.forceFrontendLink}"><f:translate key="{config.lFilePath}example_mail_link_page" /> (<r:uri.page pageUid="{config.link}" absolute="1" forceFrontendLink="{config.forceFrontendLink}" />)</r:link.page></f:then>
+							<f:then><r:link.page pageUid="{config.link}" absolute="1" forceFrontendLink="{config.forceFrontendLink}" rootpageId="{config.rootpageId}"><f:translate key="{config.lFilePath}example_mail_link_page" /> (<r:uri.page pageUid="{config.link}" absolute="1" forceFrontendLink="{config.forceFrontendLink}" rootpageId="{config.rootpageId}" />)</r:link.page></f:then>
 							<f:else><f:link.external uri="{config.link}" target="_blank"><f:translate key="{config.lFilePath}example_mail_link_external" /> (<f:uri.external uri="{config.link}" />)</f:link.external></f:else>
 						</f:if></p>
 					</td>

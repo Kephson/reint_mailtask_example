@@ -15,6 +15,14 @@ Read changelog here.
 
 -----------------------
 
+- **05.04.2016** -> 1.1.0
+
+  - added option to set rootline id of page tree
+  - updated known issues in doku with realurl 2.0
+
+
+-----------------------
+
 - **19.11.2015** -> 1.0.0
 
   - added compatibility for 7 LTS

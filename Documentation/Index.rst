@@ -17,7 +17,7 @@ Scheduler mail task example
 		reint_mailtask_example
 
 	:Version:
-		1.0.0
+		1.1.0
 
 	:Language:
 		en / de
@@ -29,7 +29,7 @@ Scheduler mail task example
 		scheduler,taks,Fluid,Extbase,Translation,Multilanguage
 
 	:Copyright:
-		2015
+		2016
 
 	:Author:
 		Ephraim Härer

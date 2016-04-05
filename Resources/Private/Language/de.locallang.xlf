@@ -35,6 +35,10 @@
 				<source>Name of sender</source> 
 				<target state="translated">Name des Senders</target>
 			</trans-unit>
+			<trans-unit id="task_f_6" approved="yes">
+				<source>Rootpage ID of page tree (needed if rootpage ID is not 1)</source>
+				<target state="translated">Rootpage ID des Seitenbaum (benötigt, wenn ID nicht 1 ist)</target>
+			</trans-unit>
 			<trans-unit id="task_en" approved="yes">
 				<source>English</source> 
 				<target state="translated">Englisch</target>

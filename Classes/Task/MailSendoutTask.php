@@ -6,7 +6,7 @@ namespace RENOLIT\ReintMailtaskExample\Task;
  *
  *  Copyright notice
  *
- *  (c) 2015 Ephraim Härer <ephraim.haerer@renolit.com>, RENOLIT SE
+ *  (c) 2016 Ephraim Härer <ephraim.haerer@renolit.com>, RENOLIT SE
  *
  *  All rights reserved
  *
@@ -42,7 +42,7 @@ class MailSendoutTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 		// initialize task class
 		$mailSendout = GeneralUtility::makeInstance('RENOLIT\\ReintMailtaskExample\\Task\\MailSendout');
-		return $mailSendout->run($this->link, $this->translang, $this->receiver_email, $this->receiver_name, $this->sender_email, $this->sender_name);
+		return $mailSendout->run($this->link, $this->translang, $this->receiver_email, $this->receiver_name, $this->sender_email, $this->sender_name, $this->rootpage_id);
 	}
 
 }

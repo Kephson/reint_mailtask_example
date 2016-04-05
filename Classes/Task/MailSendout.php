@@ -6,7 +6,7 @@ namespace RENOLIT\ReintMailtaskExample\Task;
  *
  *  Copyright notice
  *
- *  (c) 2015 Ephraim Härer <ephraim.haerer@renolit.com>, RENOLIT SE
+ *  (c) 2016 Ephraim Härer <ephraim.haerer@renolit.com>, RENOLIT SE
  *
  *  All rights reserved
  *
@@ -31,6 +31,7 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Utility\DebugUtility;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use \TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility;
 
 class MailSendout {
 
@@ -38,7 +39,6 @@ class MailSendout {
 	 * array for default options
 	 * @var array
 	 */
-
 	protected $defaultConfig = array(
 		'extKey' => 'reint_mailtask_example',
 		'lFilePath' => 'LLL:EXT:reint_mailtask_example/Resources/Private/Language/locallang.xlf:',
@@ -54,12 +54,18 @@ class MailSendout {
 	 * @param string $receiver_name
 	 * @param string $sender_email
 	 * @param string $sender_name
+	 * @param integer $rootpage_id
 	 * 
 	 * @return boolean
 	 */
-	public function run($link, $transLang, $receiver_email, $receiver_name, $sender_email, $sender_name) {
+	public function run($link, $transLang, $receiver_email, $receiver_name, $sender_email, $sender_name, $rootpage_id) {
+
+		if (ExtensionManagementUtility::isLoaded('realurl') && TYPO3_MODE == 'BE') {
+			//FrontendSimulatorUtility::simulateFrontendEnvironment();
+		}
 
 		$this->defaultConfig['link'] = $link;
+		$this->defaultConfig['rootpageId'] = $rootpage_id;
 		$this->defaultConfig['transLanguage'] = $transLang;
 		$receiver = array($receiver_email => $receiver_name);
 		$sender = array($sender_email => $sender_name);
@@ -70,7 +76,7 @@ class MailSendout {
 
 		$subject = LocalizationUtility::translate($this->defaultConfig['lFilePath'] . 'subject', $this->defaultConfig['extKey']);
 		$body = $this->renderMailContent();
-		
+
 		return $this->sendMail($receiver, $sender, $subject, $body);
 	}
 

@@ -6,7 +6,7 @@ namespace RENOLIT\ReintMailtaskExample\Task;
  *
  *  Copyright notice
  *
- *  (c) 2015 Ephraim Härer <ephraim.haerer@renolit.com>, RENOLIT SE
+ *  (c) 2016 Ephraim Härer <ephraim.haerer@renolit.com>, RENOLIT SE
  *
  *  All rights reserved
  *
@@ -69,6 +69,21 @@ class MailSendoutFields implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderI
 		$additionalFields[$fieldID_0] = array(
 			'code' => $fieldCode_0,
 			'label' => 'LLL:EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xlf:task_f_0'
+		);
+
+		// write rootpage_id field
+		if (empty($taskInfo[$this->extKey][$this->taskKey]['rootpage_id'])) {
+			if ($editEntry) {
+				$taskInfo[$this->extKey][$this->taskKey]['rootpage_id'] = $task->rootpage_id;
+			} else {
+				$taskInfo[$this->extKey][$this->taskKey]['rootpage_id'] = '';
+			}
+		}
+		$fieldID_6 = 'task_' . $this->taskKey . '_rootpage_id';
+		$fieldCode_6 = $this->getTextField($fieldID_6, 'rootpage_id', $taskInfo[$this->extKey][$this->taskKey]['rootpage_id']);
+		$additionalFields[$fieldID_6] = array(
+			'code' => $fieldCode_6,
+			'label' => 'LLL:EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xlf:task_f_6'
 		);
 
 		// write language field
@@ -176,6 +191,12 @@ class MailSendoutFields implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderI
 			$submittedData[$this->extKey][$this->taskKey]['transLanguage'] = $submittedData[$this->extKey][$this->taskKey]['transLanguage'];
 		}
 
+		if (empty($submittedData[$this->extKey][$this->taskKey]['rootpage_id']) || (int) $submittedData[$this->extKey][$this->taskKey]['rootpage_id'] < 1) {
+			$submittedData[$this->extKey][$this->taskKey]['rootpage_id'] = 1;
+		} else {
+			$submittedData[$this->extKey][$this->taskKey]['rootpage_id'] = $submittedData[$this->extKey][$this->taskKey]['rootpage_id'];
+		}
+
 		if (empty($submittedData[$this->extKey][$this->taskKey]['receiver_email'])) {
 			$errors['receiver_email'] = true;
 			$message[]['head'] = LocalizationUtility::translate('task_f_2_message_error_head', $this->extKey);
@@ -236,6 +257,7 @@ class MailSendoutFields implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderI
 	 */
 	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$task->link = $submittedData[$this->extKey][$this->taskKey]['link'];
+		$task->rootpage_id = $submittedData[$this->extKey][$this->taskKey]['rootpage_id'];
 		$task->translang = $submittedData[$this->extKey][$this->taskKey]['transLanguage'];
 		$task->receiver_email = $submittedData[$this->extKey][$this->taskKey]['receiver_email'];
 		$task->receiver_name = $submittedData[$this->extKey][$this->taskKey]['receiver_name'];
