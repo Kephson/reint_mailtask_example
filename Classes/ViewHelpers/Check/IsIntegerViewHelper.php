@@ -35,14 +35,23 @@ class IsIntegerViewHelper extends AbstractViewHelper
 {
 
     /**
+     * register additional arguments
+     */
+    public function initializeArguments(): void
+    {
+        parent::initializeArguments();
+
+        $this->registerArgument('variable', 'mixed', 'The variable', true);
+    }
+
+    /**
      * checks if a variable is an integer
      *
-     * @param mixed $variable
-     * @return boolean
+     * @return bool
      */
-    public function render(mixed $variable): bool
+    public function render(): bool
     {
-        if ((int)$variable > 0) {
+        if ((int)$this->arguments['variable'] > 0) {
             return true;
         } else {
             return false;
