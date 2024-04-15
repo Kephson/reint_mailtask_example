@@ -1,0 +1,15 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  RENOLIT\ReintMailtaskExample\:
+    resource: '../Classes/*'
+
+  RENOLIT\ReintMailtaskExample\Command\MailSendoutCommand:
+    tags:
+      - name: console.command
+        command: 'reintMailtaskExample:sendmail'
+        description: 'Scheduler/CLI mail task example'
+        schedulable: true

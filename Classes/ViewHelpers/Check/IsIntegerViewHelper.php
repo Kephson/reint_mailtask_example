@@ -1,5 +1,8 @@
 <?php
+
 namespace RENOLIT\ReintMailtaskExample\ViewHelpers\Check;
+
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -28,20 +31,22 @@ namespace RENOLIT\ReintMailtaskExample\ViewHelpers\Check;
  * @package TYPO3
  * @subpackage reint_mailtask_example
  */
-class IsIntegerViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class IsIntegerViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * checks if a variable is an integer
-	 *
-	 * @param mixed $variable
-	 * @return boolean
-	 */
-	public function render($variable) {
-		if ((int) $variable > 0) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	}
+    /**
+     * checks if a variable is an integer
+     *
+     * @param mixed $variable
+     * @return boolean
+     */
+    public function render(mixed $variable): bool
+    {
+        if ((int)$variable > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }

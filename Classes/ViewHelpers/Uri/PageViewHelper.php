@@ -2,120 +2,98 @@
 
 namespace RENOLIT\ReintMailtaskExample\ViewHelpers\Uri;
 
-/* *
- * This script is part of the TYPO3 project - inspiring people to share!  *
- *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use Closure;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * A view helper for creating URIs to TYPO3 pages.
+ * A ViewHelper for creating URIs to TYPO3 pages.
  *
- * = Examples =
+ * Examples
+ * ========
  *
- * <code title="URI to the current page">
- * <f:uri.page>page link</f:uri.page>
- * </code>
- * <output>
- * index.php?id=123
- * (depending on the current page and your TS configuration)
- * </output>
+ * URI to the current page
+ * -----------------------
  *
- * <code title="query parameters">
- * <f:uri.page pageUid="1" additionalParams="{foo: 'bar'}" />
- * </code>
- * <output>
- * index.php?id=1&foo=bar
- * (depending on your TS configuration)
- * </output>
+ * ::
  *
- * <code title="query parameters for extensions">
- * <f:uri.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}" />
- * </code>
- * <output>
- * index.php?id=1&extension_key[foo]=bar
- * (depending on your TS configuration)
- * </output>
+ *    <f:uri.page>page link</f:uri.page>
+ *
+ * ``/page/path/name.html``
+ *
+ * Depending on current page, routing and page path configuration.
+ *
+ * Query parameters
+ * ----------------
+ *
+ * ::
+ *
+ *    <f:uri.page pageUid="1" additionalParams="{foo: 'bar'}" />
+ *
+ * ``/page/path/name.html?foo=bar``
+ *
+ * Depending on current page, routing and page path configuration.
+ *
+ * Query parameters for extensions
+ * -------------------------------
+ *
+ * ::
+ *
+ *    <f:uri.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}" />
+ *
+ * ``/page/path/name.html?extension_key[foo]=bar``
+ *
+ * Depending on current page, routing and page path configuration.
  */
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use \TYPO3\CMS\Frontend\Utility\EidUtility;
-use \TYPO3\CMS\Backend\Utility\BackendUtility;
-use \TYPO3\CMS\Core\Utility\DebugUtility;
+class PageViewHelper extends AbstractViewHelper
+{
 
-class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+    use CompileWithRenderStatic;
 
-	/**
-	 * @param integer|NULL $pageUid target PID
-	 * @param array $additionalParams query parameters to be attached to the resulting URI
-	 * @param integer $pageType type of the target page. See typolink.parameter
-	 * @param boolean $noCache set this to disable caching for the target page. You should not need this.
-	 * @param boolean $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
-	 * @param string $section the anchor to be added to the URI
-	 * @param boolean $linkAccessRestrictedPages If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.
-	 * @param boolean $absolute If set, the URI of the rendered link is absolute
-	 * @param boolean $addQueryString If set, the current query parameters will be kept in the URI
-	 * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = TRUE
-	 * @param string $addQueryStringMethod Set which parameters will be kept. Only active if $addQueryString = TRUE
-	 * @param boolean $forceFrontendLink Force to generate a frontend link, e.g. in backend
-	 * @param integer $rootpageId Rootpage ID of page tree
-	 * @return string Rendered page URI
-	 */
-	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(), $addQueryStringMethod = NULL, $forceFrontendLink = FALSE, $rootpageId = 1) {
-		$uriBuilder = $this->controllerContext->getUriBuilder();
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('pageUid', 'int', 'target PID', true);
+        $this->registerArgument('arguments', 'array', 'Additional arguments for the URI');
+        $this->registerArgument('additionalParams', 'array', 'query parameters to be attached to the resulting URI', false, []);
+    }
 
-		if ($forceFrontendLink) {
-			$this->initTSFE($rootpageId);
-			$uri = $uriBuilder->reset()
-					->setTargetPageUid($pageUid)
-					->setTargetPageType($pageType)
-					->setNoCache($noCache)
-					->setUseCacheHash(!$noCacheHash)
-					->setSection($section)
-					->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
-					->setArguments($additionalParams)
-					->setCreateAbsoluteUri($absolute)
-					->setAddQueryString($addQueryString)
-					->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
-					->setAddQueryStringMethod($addQueryStringMethod)
-					->buildFrontendUri();
-		} else {
-			$uri = $uriBuilder->setTargetPageUid($pageUid)->setTargetPageType($pageType)->setNoCache($noCache)->setUseCacheHash(!$noCacheHash)->setSection($section)->setLinkAccessRestrictedPages($linkAccessRestrictedPages)->setArguments($additionalParams)->setCreateAbsoluteUri($absolute)->setAddQueryString($addQueryString)->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)->setAddQueryStringMethod($addQueryStringMethod)->build();
-		}
-		return $uri;
-	}
-
-	/**
-	 * initialize the TYPO3 frontend
-	 * 
-	 * @param integer $id
-	 * @param integer $typeNum
-	 */
-	protected function initTSFE($id = 1, $typeNum = 0) {
-		EidUtility::initTCA();
-		if (!is_object($GLOBALS['TT'])) {
-			$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
-			$GLOBALS['TT']->start();
-		}
-		$GLOBALS['TSFE'] = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'], $id, $typeNum);
-		$GLOBALS['TSFE']->connectToDB();
-		$GLOBALS['TSFE']->initFEuser();
-		$GLOBALS['TSFE']->determineId();
-		$GLOBALS['TSFE']->initTemplate();
-		$GLOBALS['TSFE']->getConfigArray();
-
-		if (ExtensionManagementUtility::isLoaded('realurl')) {
-			$rootline = BackendUtility::BEgetRootLine($id);
-			$host = BackendUtility::firstDomainRecord($rootline);
-			$_SERVER['HTTP_HOST'] = $host;
-		}
-	}
-
+    /**
+     * @param array $arguments
+     * @param Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string Rendered page URI
+     * @throws SiteNotFoundException
+     */
+    public static function renderStatic(
+        array                     $arguments,
+        Closure                   $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    )
+    {
+        $pageUid = (int)$arguments['pageUid'];
+        $arguments = isset($arguments['arguments']) ? (array)$arguments['arguments'] : [];
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $site = $siteFinder->getSiteByPageId((int)$pageUid);
+        return (string)$site->getRouter()->generateUri($pageUid, $arguments);
+    }
 }

@@ -33,8 +33,9 @@ use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use \TYPO3\CMS\Frontend\Utility\EidUtility;
 use \TYPO3\CMS\Backend\Utility\BackendUtility;
 use \TYPO3\CMS\Core\Utility\DebugUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ActionViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @param string $action Target action
