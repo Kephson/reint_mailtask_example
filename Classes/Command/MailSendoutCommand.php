@@ -11,11 +11,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Exception as CoreException;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception as ExtbaseException;
@@ -31,10 +35,10 @@ class MailSendoutCommand extends Command
      * array for default options
      * @var array
      */
-    protected $defaultConfig = array(
+    protected array $defaultConfig = [
         'extKey' => 'reint_mailtask_example',
         'lFilePath' => 'LLL:EXT:reint_mailtask_example/Resources/Private/Language/locallang.xlf:',
-    );
+    ];
 
     protected function configure(): void
     {
@@ -79,12 +83,12 @@ class MailSendoutCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $link = (int)$input->getArgument('link');
-        $transLang = (int)$input->getArgument('trans-lang');
-        $receiver_email = (int)$input->getArgument('receiver-email');
-        $receiver_name = (int)$input->getArgument('receiver-name');
-        $sender_email = (int)$input->getArgument('sender-email');
-        $sender_name = (int)$input->getArgument('sender-name');
+        $link = $input->getArgument('link');
+        $transLang = $input->getArgument('trans-lang');
+        $receiver_email = $input->getArgument('receiver-email');
+        $receiver_name = $input->getArgument('receiver-name');
+        $sender_email = $input->getArgument('sender-email');
+        $sender_name = $input->getArgument('sender-name');
         $rootpage_id = (int)$input->getArgument('rootpage-id');
         $io = new SymfonyStyle($input, $output);
         try {
@@ -104,7 +108,7 @@ class MailSendoutCommand extends Command
      * @param string $receiver_name
      * @param string $sender_email
      * @param string $sender_name
-     * @param integer $rootpage_id
+     * @param int $rootpage_id
      * @return bool
      * @throws ExtbaseException
      * @throws IllegalObjectTypeException
@@ -112,20 +116,16 @@ class MailSendoutCommand extends Command
      * @throws UnknownObjectException
      * @throws CoreException
      */
-    public function runTask(SymfonyStyle $io, $link, $transLang, $receiver_email, $receiver_name, $sender_email, $sender_name, $rootpage_id): bool
+    public function runTask(SymfonyStyle $io, string $link, string $transLang, string $receiver_email, string $receiver_name, string $sender_email, string $sender_name, int $rootpage_id): bool
     {
         $this->defaultConfig['link'] = $link;
         $this->defaultConfig['rootpageId'] = $rootpage_id;
         $this->defaultConfig['transLanguage'] = $transLang;
-        $receiver = array($receiver_email => $receiver_name);
-        $sender = array($sender_email => $sender_name);
-
-        // change language if other language is set in scheduler task
-        //$GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
-        //$GLOBALS['LANG']->init($transLang);
+        $receiver = [$receiver_email => $receiver_name];
+        $sender = [$sender_email => $sender_name];
 
         $subject = LocalizationUtility::translate($this->defaultConfig['lFilePath'] . 'subject', $this->defaultConfig['extKey']);
-        $body = $this->renderMailContent();
+        $body = $this->renderMailContent($rootpage_id, $transLang);
         $mailSent = $this->sendMail($receiver, $sender, $subject, $body);
 
         if ($mailSent) {
@@ -163,13 +163,22 @@ class MailSendoutCommand extends Command
     /**
      * renders a fluid mail template
      *
+     * @param int $rootpage_id
+     * @param string $transLang
      * @param string $templateName
      *
      * @return string
+     * @throws SiteNotFoundException
      */
-    protected function renderMailContent($templateName = 'Example'): string
+    protected function renderMailContent(int $rootpage_id, string $transLang = 'en', string $templateName = 'Example'): string
     {
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($rootpage_id);
         $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('site', $site)
+            ->withAttribute('language', $transLang);
+        $view->setRequest($request);
         $view->getRequest()->setControllerExtensionName($this->defaultConfig['extensionName']);
         $view->setPartialRootPaths(
             [10 => ExtensionManagementUtility::extPath($this->defaultConfig['extKey']) . 'Resources/Private/Partials/']
