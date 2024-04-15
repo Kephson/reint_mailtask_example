@@ -22,12 +22,16 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Object\Exception as ExtbaseException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class MailSendoutCommand extends Command
 {
@@ -173,12 +177,17 @@ class MailSendoutCommand extends Command
     protected function renderMailContent(int $rootpage_id, string $transLang = 'en', string $templateName = 'Example'): string
     {
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($rootpage_id);
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('site', $site)
             ->withAttribute('language', $transLang);
-        $view->setRequest($request);
+        $contentObject->setRequest($request);
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class, $contentObject);
+        //$view->
+        //$view->setRequest($request);
+
         $view->getRequest()->setControllerExtensionName($this->defaultConfig['extensionName']);
         $view->setPartialRootPaths(
             [10 => ExtensionManagementUtility::extPath($this->defaultConfig['extKey']) . 'Resources/Private/Partials/']
