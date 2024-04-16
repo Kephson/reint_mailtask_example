@@ -38,6 +38,14 @@ Please report issue directly in the [issue tracker in the Github repository][3].
 
 You can test the scheduler command via CLI or in the scheduler in TYPO3 backend.
 
+Example command (with DDEV local) on CLI or in a scheduler task:
+
+`
+ddev typo3 reintMailtaskExample:sendmail 2 de "receiver@receive.me" "I am the receiver" "sender@send.me" "I am the sender" 1
+`
+
+This will send an email with the target language German (de) with a link to page id 2 and language id 1.
+
 ### 4.2 Changelog
 
 Please have a look into the [Github repository][3].
