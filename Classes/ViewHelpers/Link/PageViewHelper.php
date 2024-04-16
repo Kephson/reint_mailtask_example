@@ -93,7 +93,7 @@ class PageViewHelper extends AbstractTagBasedViewHelper
         $pageUid = (int)$this->arguments['pageUid'];
         $arguments = isset($this->arguments['arguments']) ? (array)$this->arguments['arguments'] : [];
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-        $site = $siteFinder->getSiteByPageId((int)$pageUid);
+        $site = $siteFinder->getSiteByPageId($pageUid);
         $uri = (string)$site->getRouter()->generateUri($pageUid, $arguments);
 
         if ($uri !== '') {

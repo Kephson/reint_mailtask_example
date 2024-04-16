@@ -11,15 +11,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Exception as CoreException;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception as ExtbaseException;
@@ -28,7 +25,6 @@ use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class MailSendoutCommand extends Command
 {
@@ -53,7 +49,7 @@ class MailSendoutCommand extends Command
             ->addArgument(
                 'trans-lang',
                 InputArgument::REQUIRED,
-                'Language of mail sendout (ISO-2, e.g. en, de)'
+                'Language of mail sendout and translation (ISO-2, e.g. en, de)'
             )
             ->addArgument(
                 'receiver-email',
@@ -76,40 +72,39 @@ class MailSendoutCommand extends Command
                 'Name of sender'
             )
             ->addArgument(
-                'rootpage-id',
-                InputArgument::REQUIRED,
-                'Rootpage ID of page tree (default is 1)'
+                'link-lang',
+                InputArgument::OPTIONAL,
+                'Language ID of link target'
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $link = $input->getArgument('link');
+        $linkLang = ((int)$input->getArgument('link-lang') > 0) ? (int)$input->getArgument('link-lang') : 0;
         $transLang = $input->getArgument('trans-lang');
         $receiver_email = $input->getArgument('receiver-email');
         $receiver_name = $input->getArgument('receiver-name');
         $sender_email = $input->getArgument('sender-email');
         $sender_name = $input->getArgument('sender-name');
-        $rootpage_id = (int)$input->getArgument('rootpage-id');
         $io = new SymfonyStyle($input, $output);
         try {
-            $this->runTask($io, $link, $transLang, $receiver_email, $receiver_name, $sender_email, $sender_name, $rootpage_id);
+            $this->runTask($io, $link, $linkLang, $transLang, $receiver_email, $receiver_name, $sender_email, $sender_name);
         } catch (Exception) {
             return Command::FAILURE;
         }
         return Command::SUCCESS;
     }
 
-
     /**
      * @param SymfonyStyle $io
      * @param string $link
+     * @param int $linkLang
      * @param string $transLang
      * @param string $receiver_email
      * @param string $receiver_name
      * @param string $sender_email
      * @param string $sender_name
-     * @param int $rootpage_id
      * @return bool
      * @throws ExtbaseException
      * @throws IllegalObjectTypeException
@@ -117,37 +112,46 @@ class MailSendoutCommand extends Command
      * @throws UnknownObjectException
      * @throws CoreException
      */
-    public function runTask(SymfonyStyle $io, string $link, string $transLang, string $receiver_email, string $receiver_name, string $sender_email, string $sender_name, int $rootpage_id): bool
+    public function runTask(SymfonyStyle $io, string $link, int $linkLang, string $transLang, string $receiver_email, string $receiver_name, string $sender_email, string $sender_name): bool
     {
         $this->defaultConfig['link'] = $link;
-        $this->defaultConfig['rootpageId'] = $rootpage_id;
+        $this->defaultConfig['linkLang'] = $linkLang;
         $this->defaultConfig['transLanguage'] = $transLang;
         $receiver = [$receiver_email => $receiver_name];
         $sender = [$sender_email => $sender_name];
 
-        $subject = LocalizationUtility::translate($this->defaultConfig['lFilePath'] . 'subject', $this->defaultConfig['extKey']);
-        $body = $this->renderMailContent($rootpage_id, $transLang);
+        $subject = LocalizationUtility::translate($this->defaultConfig['lFilePath'] . 'subject', $this->defaultConfig['extKey'], null, $transLang);
+        $body = $this->renderMailContent($transLang);
         $mailSent = $this->sendMail($receiver, $sender, $subject, $body);
 
         if ($mailSent) {
-            $title = 'Emails successfully sent';
-            $message = 'Successfully send the email with its content.';
+            $title = 'Email sent successfully';
+            $message = 'Successfully send the email with its example content.';
         } else {
-            $title = 'Emails not sent';
+            $title = 'Email not sent';
             $message = 'Could not send the email, please check the log.';
         }
 
         $isCli = Environment::isCli();
         if ($isCli) {
             $io->section($title);
-            $io->success($message);
+            if ($mailSent) {
+                $io->success($message);
+            } else {
+                $io->error($message);
+            }
         } else {
+            if ($mailSent) {
+                $messageCode = AbstractMessage::OK;
+            } else {
+                $messageCode = AbstractMessage::ERROR;
+            }
             /** @var $messageOut FlashMessage */
             $messageOut = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $message,
                 $title,
-                AbstractMessage::INFO,
+                $messageCode,
                 false
             );
             /* get backend message queue */
@@ -164,25 +168,18 @@ class MailSendoutCommand extends Command
     /**
      * renders a fluid mail template
      *
-     * @param int $rootpage_id
      * @param string $transLang
      * @param string $templateName
      *
      * @return string
-     * @throws SiteNotFoundException
      */
-    protected function renderMailContent(int $rootpage_id, string $transLang = 'en', string $templateName = 'Example'): string
+    protected function renderMailContent(string $transLang = 'en', string $templateName = 'Example'): string
     {
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($rootpage_id);
-        $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('site', $site)
-            ->withAttribute('language', $transLang);
-        $contentObject->setRequest($request);
+        $extensionKey = GeneralUtility::underscoredToUpperCamelCase($this->defaultConfig['extKey']);
+
         /** @var StandaloneView $view */
-        $view = GeneralUtility::makeInstance(StandaloneView::class, $contentObject);
-        $view->getRequest()->setControllerExtensionName($this->defaultConfig['extKey']);
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->getRequest()->setControllerExtensionName($extensionKey);
         $view->setPartialRootPaths(
             [10 => ExtensionManagementUtility::extPath($this->defaultConfig['extKey']) . 'Resources/Private/Partials/']
         );
@@ -193,6 +190,10 @@ class MailSendoutCommand extends Command
                 $this->defaultConfig['extKey']
             ) . 'Resources/Private/Templates/Mail/' . $templateName . '.html';
         $view->setTemplatePathAndFilename($templatePathAndFilename);
+        $view->assignMultiple([
+            'config' => $this->defaultConfig,
+            'languageKey' => $transLang,
+        ]);
         $view->assign('config', $this->defaultConfig);
         return $view->render();
     }
@@ -214,7 +215,6 @@ class MailSendoutCommand extends Command
         /** @var $mail MailMessage */
         $mail = GeneralUtility::makeInstance(MailMessage::class);
 
-        // add attachment
         if ($attachment !== '') {
             if (is_file($attachment)) {
                 $mail->attachFromPath($attachment);
@@ -231,5 +231,4 @@ class MailSendoutCommand extends Command
             return false;
         }
     }
-
 }
