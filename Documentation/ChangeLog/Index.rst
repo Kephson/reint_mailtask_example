@@ -15,6 +15,14 @@ Read changelog here.
 
 -----------------------
 
+- **16.04.2024** -> 2.0.0
+
+  - full update for TYPO3 11.5
+  - switched to CLI command with option to use in scheduler
+
+
+-----------------------
+
 - **05.04.2016** -> 1.1.0
 
   - added option to set rootline id of page tree

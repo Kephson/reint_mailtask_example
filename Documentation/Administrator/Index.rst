@@ -13,8 +13,8 @@ Administrator Manual
 
 Target group: **Administrators**
 
-Just install the extension and add the scheduler task from this extension.
+Just install the extension and add the scheduler task from this extension or use the scheduler task via CLI.
 
-Fill out all required fields and test the task.
+Fill out all required fields / add all parameters and test the task.
 
-If you want to generate frontend links to a page in your pagetree make sure a domain record is set on root-page.
+If you want to generate frontend links to a page in your pagetree make sure a site configuration is added there.
