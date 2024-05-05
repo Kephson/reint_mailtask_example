@@ -1,69 +1,69 @@
 {
-  "name": "renolit/reint-mailtask-example",
-  "description": "An example scheduler task with mail send out with Fluid-templates and multilanguage support.",
-  "license": "GPL-2.0-or-later",
-  "type": "typo3-cms-extension",
-  "keywords": [
-    "TYPO3 CMS",
-    "Redirect",
-    "Mail",
-    "Task",
-    "Scheduler"
-  ],
-  "authors": [
-    {
-      "name": "Ephraim Härer",
-      "role": "Developer"
-    }
-  ],
-  "homepage": "https://ephra.im",
-  "require": {
-    "php": "~8.1.0 || ~8.2.0",
-    "typo3/cms-core": "^11.5 || ^12.4",
-    "typo3/cms-frontend": "^11.5 || ^12.4",
-    "typo3/cms-scheduler": "^11.5 || ^12.4",
-    "typo3/cms-fluid": "^11.5 || ^12.4"
-  },
-  "require-dev": {
-    "ergebnis/composer-normalize": "^2.42",
-    "phpunit/phpunit": "^8.5.27",
-    "roave/security-advisories": "dev-master",
-    "typo3/coding-standards": "^0.7",
-    "typo3/testing-framework": "^6.16"
-  },
-  "autoload": {
-    "psr-4": {
-      "RENOLIT\\ReintMailtaskExample\\": "Classes"
-    }
-  },
-  "config": {
-    "allow-plugins": {
-      "typo3/class-alias-loader": true,
-      "typo3/cms-composer-installers": true,
-      "ergebnis/composer-normalize": true
-    },
-    "bin-dir": ".Build/bin",
-    "sort-packages": true,
-    "vendor-dir": ".Build/vendor"
-  },
-  "extra": {
-    "typo3/cms": {
-      "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "extension-key": "reint_mailtask_example",
-      "web-dir": ".Build/web"
-    }
-  },
-  "scripts": {
-    "ci:tests": [
-      "@ci:tests:unit",
-      "@ci:tests:functional"
-    ],
-    "ci:tests:functional": "find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .Build/vendor/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml {}';",
-    "ci:tests:unit": "vendor/bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit"
-  },
-  "scripts-descriptions": {
-    "ci:tests": "Runs all PHPUnit tests (unit and functional).",
-    "ci:tests:functional": "Runs the functional tests.",
-    "ci:tests:unit": "Runs the unit tests."
-  }
+	"name": "renolit/reint-mailtask-example",
+	"description": "An example scheduler task with mail send out with Fluid-templates and multilanguage support.",
+	"license": "GPL-2.0-or-later",
+	"type": "typo3-cms-extension",
+	"keywords": [
+		"TYPO3 CMS",
+		"Redirect",
+		"Mail",
+		"Task",
+		"Scheduler"
+	],
+	"authors": [
+		{
+			"name": "Ephraim Härer",
+			"role": "Developer"
+		}
+	],
+	"homepage": "https://ephra.im",
+	"require": {
+		"php": "~8.1.0 || ~8.2.0",
+		"typo3/cms-core": "^11.5 || ^12.4",
+		"typo3/cms-frontend": "^11.5 || ^12.4",
+		"typo3/cms-scheduler": "^11.5 || ^12.4",
+		"typo3/cms-fluid": "^11.5 || ^12.4"
+	},
+	"require-dev": {
+		"ergebnis/composer-normalize": "^2.42",
+		"phpunit/phpunit": "^8.5.27",
+		"roave/security-advisories": "dev-master",
+		"typo3/coding-standards": "^0.7",
+		"typo3/testing-framework": "^6.16"
+	},
+	"autoload": {
+		"psr-4": {
+			"RENOLIT\\ReintMailtaskExample\\": "Classes"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true,
+			"ergebnis/composer-normalize": true
+		},
+		"bin-dir": ".Build/bin",
+		"sort-packages": true,
+		"vendor-dir": ".Build/vendor"
+	},
+	"extra": {
+		"typo3/cms": {
+			"cms-package-dir": "{$vendor-dir}/typo3/cms",
+			"extension-key": "reint_mailtask_example",
+			"web-dir": ".Build/web"
+		}
+	},
+	"scripts": {
+		"ci:tests": [
+			"@ci:tests:unit",
+			"@ci:tests:functional"
+		],
+		"ci:tests:functional": "find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .Build/vendor/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml {}';",
+		"ci:tests:unit": "vendor/bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit"
+	},
+	"scripts-descriptions": {
+		"ci:tests": "Runs all PHPUnit tests (unit and functional).",
+		"ci:tests:functional": "Runs the functional tests.",
+		"ci:tests:unit": "Runs the unit tests."
+	}
 }
