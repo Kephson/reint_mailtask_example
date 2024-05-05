@@ -11,12 +11,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Exception as CoreException;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception as ExtbaseException;
@@ -172,6 +176,7 @@ class MailSendoutCommand extends Command
      * @param string $templateName
      *
      * @return string
+     * @throws SiteNotFoundException
      */
     protected function renderMailContent(string $transLang = 'en', string $templateName = 'Example'): string
     {
@@ -182,6 +187,11 @@ class MailSendoutCommand extends Command
         $versionInformation = GeneralUtility::makeInstance(Typo3Version::class);
         if ($versionInformation->getMajorVersion() < 12) {
             $view->getRequest()->setControllerExtensionName($extensionKey);
+        } else {
+            $request = (new ServerRequest())
+                ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+                ->withAttribute('language', $transLang);
+            $view->setRequest($request);
         }
         $view->setPartialRootPaths(
             [
