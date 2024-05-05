@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception as CoreException;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -178,12 +179,19 @@ class MailSendoutCommand extends Command
 
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->getRequest()->setControllerExtensionName($extensionKey);
+        $versionInformation = GeneralUtility::makeInstance(Typo3Version::class);
+        if ($versionInformation->getMajorVersion() < 12) {
+            $view->getRequest()->setControllerExtensionName($extensionKey);
+        }
         $view->setPartialRootPaths(
-            [10 => ExtensionManagementUtility::extPath($this->defaultConfig['extKey']) . 'Resources/Private/Partials/']
+            [
+                10 => ExtensionManagementUtility::extPath($this->defaultConfig['extKey']) . 'Resources/Private/Partials/'
+            ]
         );
         $view->setLayoutRootPaths(
-            [10 => ExtensionManagementUtility::extPath($this->defaultConfig['extKey']) . 'Resources/Private/Layouts/']
+            [
+                10 => ExtensionManagementUtility::extPath($this->defaultConfig['extKey']) . 'Resources/Private/Layouts/'
+            ]
         );
         $templatePathAndFilename = ExtensionManagementUtility::extPath(
                 $this->defaultConfig['extKey']
